@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+#root{
+  font-family: 'Poppins', sans-serif;
+}
+
+.message{
+  position: fixed;
+  bottom: -40px;
+  margin: 0 auto;
+}
+.message.show{
+  bottom: 40px;
+  transition: 0.5s;
+  opacity: 1;
+}
+.message.close{
+  bottom: -40px;
+  transition: 0.5s;
+  opacity: 0;
+  background: #ff505030;
+}
+
+

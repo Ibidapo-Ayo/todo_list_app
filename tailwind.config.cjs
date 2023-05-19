@@ -6,14 +6,16 @@ module.exports = {
   ],
   theme: {
     colors:{
-      'blue': '#1fb6ff',
+      'brandColor': '#00A82D',
       'white': '#fff',
-      'gray':'#efefef',
+      'gray':'rgba(230, 230, 230, 0.5)',
       'success': '#6cc070',
+      'dark': '#000',
       'danger': {
         '100': '#ff5050',
         '200': '#ff505080',
       },
+      'homeBg': '#000',
     },
     extend: {},
   },

@@ -8,6 +8,7 @@ import Search from "./Search";
 import CompletedTasks from "./CompletedTasks";
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
+import { FiFileText } from "react-icons/fi";
 
 function AppContainer() {
   const [Click, setClick] = useState(false);
@@ -16,6 +17,8 @@ function AppContainer() {
   const [showSearch, setShowSearch] = useState([]);
   const [msg, setMsg] = useState("");
 
+  // const [completed, setCompleted] = useState(JSON.parse(localStorage.getItem('CompletedTasks')))
+
   const AddTask = () => {
     setClick(true);
   };
@@ -23,24 +26,20 @@ function AppContainer() {
   const handleAddTasks = e => {
     e.preventDefault();
     const TaskTitle = e.target.taskTitle.value.trim();
-    const taskDescription = e.target.taskDescription.value.trim();
     const splitTaskTitle = TaskTitle.split("+");
-    const splitTaskDescription = taskDescription.split("+");
     const TaskTitleLength = splitTaskTitle.length;
-    const taskDescriptionLength = splitTaskDescription.length;
 
-    if (TaskTitle && taskDescription) {
+    if (TaskTitle) {
       let sucessMessage;
-      for (let i = 0; i < TaskTitleLength && i < taskDescriptionLength; i++) {
+      for (let i = 0; i < TaskTitleLength; i++) {
         const newTask = {
           id: uniqueId(),
           title: splitTaskTitle[i],
-          description: splitTaskDescription[i],
-          Completed: false
+          Completed: false,
+          DateAdded: new Date().toJSON().slice(0, 10)
         };
         setTasks(prev => [...prev, newTask]);
         e.target.taskTitle.value = "";
-        e.target.taskDescription.value = "";
         sucessMessage = `Task ${newTask.id} added succesfully`;
         setMsg(sucessMessage);
         setTimeout(() => {
@@ -49,11 +48,11 @@ function AppContainer() {
         }, 3000);
       }
     } else {
-     let sucessMessage = 'Please enter some text to continue'
+      let sucessMessage = "Please enter some text to continue";
       setMsg(sucessMessage);
-      setTimeout(()=>{
-        setMsg('')
-      }, 3000)
+      setTimeout(() => {
+        setMsg("");
+      }, 3000);
     }
   };
 
@@ -65,6 +64,9 @@ function AppContainer() {
     errorMessage = `Task ${index} deleted succesfully`;
     setMsg(errorMessage);
     setTasks(newTasks);
+    const completed = tasks.filter(completed => completed.Completed === true)
+     localStorage.setItem('CompletedTasks', JSON.stringify(completed))
+    console.log(completed)
     setTimeout(() => {
       errorMessage = ``;
       setMsg();
@@ -72,29 +74,32 @@ function AppContainer() {
   };
 
   // Deleted Tasks
-  const DeleteTask = (id) =>{
+  const DeleteTask = id => {
     let deleteMsg;
     const DeletedTasks = tasks.filter(deletetasks => id !== deletetasks.id);
     deleteMsg = `Task ${id} has succefully been deleted`;
     setTasks(DeletedTasks);
-    setMsg(deleteMsg)
-    setTimeout(()=>{
-      setMsg()
-    }, 3000)
-  }
+    setMsg(deleteMsg);
+    setTimeout(() => {
+      setMsg();
+    }, 3000);
+  };
 
   // Restore Tasks
-  const RestoreTasks = (index) =>{
+  const RestoreTasks = index => {
     let restoreMsg;
     const oldTasks = [...tasks];
     oldTasks[index].Completed = false;
     restoreMsg = `Task ${index} has succesfully been restored`;
-    setMsg(restoreMsg)
+    const restoreTasks = JSON.parse(localStorage.getItem('CompletedTasks'))
+    restoreTasks[index].Completed = false;
+    console.log(restoreTasks)
+    setMsg(restoreMsg);
     setTasks(oldTasks);
-    setTimeout(()=>{
-      setMsg()
-    },2000)
-  }
+    setTimeout(() => {
+      setMsg();
+    }, 2000);
+  };
 
   //Search Tasks
   const setSearchHandler = e => {
@@ -105,33 +110,43 @@ function AppContainer() {
     var updatedList = tasks.filter(searchR =>
       searchR.title.toLowerCase().includes(search.toLowerCase())
     );
-      setShowSearch(updatedList);
+    setShowSearch(updatedList);
   };
-
-  // Highlight the Clicked Search Reasults
-
-  // const SearchHightlight = (id, index) =>{
-  //   var showHightlight = tasks.filter(highlight => id === highlight.id);
-  //   console.log(showHightlight[index].id);
-  //   if (tasks[index].id === showHightlight[index].id) {
-  //     console.log("True")
-  //   }
-  // }
   // Save Tasks to Local Storage
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
-  // // Save Completed Tasks to Local Storage
-  // useEffect(()=>{
-  //   localStorage.setItem('CompletedTasks', JSON.stringify(completedtask))
-  // }, [completedtask])
-
   return (
-    <div>
-      <NavBar setSearchHandler={setSearchHandler}  showSearch={showSearch}
-            search={search}
-            SearchTasks={SearchTasks}/>
+    <div className="bg-homeBg h-[100vh] flex flex-row">
+      <SideBar AddTask={AddTask} />
+
+      <div className="w-[350px] border-gray border-r-2 text-white">
+        <ShowAddedTasks
+          tasks={tasks}
+          CompletedTask={TaskCompleted}
+          DeleteTask={DeleteTask}
+          RestoreTasks={RestoreTasks}
+        />
+      </div>
+      <div className="px-3 pt-3">
+        <div className="flex flex-row items-center space-x-3 text-white">
+          <FiFileText />
+          <h1 className="text-[18px]"> Add Tasks</h1>
+        </div>
+        <div className="mt-2">
+          <TodoList
+            CancelBtn={() => setClick(false)}
+            handleAddTasks={handleAddTasks}
+          />
+        </div>
+      </div>
+      {/* <NavBar
+        setSearchHandler={setSearchHandler}
+        showSearch={showSearch}
+        search={search}
+        SearchTasks={SearchTasks}
+      />
       <div className="flex flex-row">
         <div className="w-[100%] flex flex-col items-center justify-center mt-10">
           {msg ? (
@@ -149,21 +164,25 @@ function AppContainer() {
             RestoreTasks={RestoreTasks}
           />
 
-          {Click ? "" : <div className="w-[100%] flex flex-col items-start justify-start container mt-10 px-[285px]"><AddTasks AddTask={AddTask} /></div>}
+          {Click ? (
+            ""
+          ) : (
+            <div className="w-[100%] flex flex-col items-start justify-start container mt-10 px-[285px]">
+              <AddTasks AddTask={AddTask} />
+            </div>
+          )}
           {Click ? (
             <div className="mt-10">
-                <TodoList
-              CancelBtn={() => setClick(false)}
-              handleAddTasks={handleAddTasks}
-            />
+              <TodoList
+                CancelBtn={() => setClick(false)}
+                handleAddTasks={handleAddTasks}
+              />
             </div>
-          
-          
           ) : (
             ""
           )}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

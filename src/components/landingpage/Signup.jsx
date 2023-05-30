@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { Link } from 'react-router-dom  '
+import { Link,useNavigate } from 'react-router-dom  '
 
 function Signup() {
   const [uname, setUname] = useState('')
   const [email, setEmail] = useState('')
   const [pwd, setPwd] = useState('')
+  const navigate = useNavigate()
 
   const onChangeUname = (e)=>{
     setUname(e.target.value)
@@ -16,6 +17,23 @@ function Signup() {
     setPwd(e.target.value)
   }
 
+  const registerUser = (e) =>{
+    e.preventDefault()
+    fetch('http://localhost:3000/register/', {
+      method: 'post',
+      headers: {'Content-Type':'application/json'},
+      body:JSON.stringify({
+        email: email,
+        name: uname
+      })
+    }).then(res => res.json())
+    .then(user => {
+      if(user){
+        navigate('/home')
+
+      } 
+    }).catch(err => console.log(err))
+  }
   
   return (
     <div className="flex flex-col items-center justify-center">
@@ -24,7 +42,7 @@ function Signup() {
           <h2 className="text-[30px] font-[700] text-center text-brandColor">Toda</h2>
           <p className="text-[12px] text-center">Remember everything important</p>
         </div>
-        <div className="flex flex-col space-y-4 items-center">
+        <form className="flex flex-col space-y-4 items-center" onSubmit={registerUser}>
           <div>
             <input
               type="text"
@@ -60,9 +78,9 @@ function Signup() {
            <input
               type="submit"
               className='bg-brandColor rounded-[10px] p-3 cursor-pointer text-white px-[16px] w-[314px] h-[44.6px]'
-              value="Register" onClick={()=> console.log('True')}
+              value="Register"
           />: <input
-          type="submit"
+          type=""
           className='bg-brandColor opacity-[0.5] rounded-[10px] p-3 cursor-not-allowed text-white px-[16px] w-[314px] h-[44.6px]'
           value="Register" 
       /> }
@@ -74,7 +92,7 @@ function Signup() {
             <p className="w-[310px] text-[13px] text-center">Already have an account?</p>
             <p className="text-brandColor text-center"><Link to='/signin'>Sign in</Link></p>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

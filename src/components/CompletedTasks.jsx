@@ -1,8 +1,8 @@
 import React from "react";
-function CompletedTasks() {
+function CompletedTasks({ completed }) {
   return (
     <div className="flex flex-col space-y-5">
-     Helloooo
+    Hello
     </div>
   );
 }

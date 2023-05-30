@@ -17,7 +17,7 @@ function AppContainer() {
   const [showSearch, setShowSearch] = useState([]);
   const [msg, setMsg] = useState("");
 
-  // const [completed, setCompleted] = useState(JSON.parse(localStorage.getItem('CompletedTasks')))
+  const [completed, setCompleted] = useState(JSON.parse(localStorage.getItem('CompletedTasks')))
 
   const AddTask = () => {
     setClick(true);
@@ -61,12 +61,12 @@ function AppContainer() {
     let errorMessage;
     const newTasks = [...tasks];
     newTasks[index].Completed = true;
-    errorMessage = `Task ${index} deleted succesfully`;
+    errorMessage = `Task ${index} completed succesfully`;
     setMsg(errorMessage);
     setTasks(newTasks);
     const completed = tasks.filter(completed => completed.Completed === true)
      localStorage.setItem('CompletedTasks', JSON.stringify(completed))
-    console.log(completed)
+     setCompleted(completed)
     setTimeout(() => {
       errorMessage = ``;
       setMsg();
@@ -91,9 +91,10 @@ function AppContainer() {
     const oldTasks = [...tasks];
     oldTasks[index].Completed = false;
     restoreMsg = `Task ${index} has succesfully been restored`;
-    const restoreTasks = JSON.parse(localStorage.getItem('CompletedTasks'))
-    restoreTasks[index].Completed = false;
-    console.log(restoreTasks)
+    const restore = tasks.filter(restore => restore.Completed === true)
+    localStorage.setItem('CompletedTasks', JSON.stringify(restore))
+    setCompleted(restore)
+    
     setMsg(restoreMsg);
     setTasks(oldTasks);
     setTimeout(() => {
@@ -119,7 +120,13 @@ function AppContainer() {
 
   return (
     <div className="bg-homeBg h-[100vh] flex flex-row">
-      <SideBar AddTask={AddTask} />
+      <SideBar 
+      AddTask={AddTask}
+        setSearchHandler={setSearchHandler}
+        showSearch={showSearch}
+        search={search}
+        SearchTasks={SearchTasks}
+      />
 
       <div className="w-[350px] border-gray border-r-2 text-white">
         <ShowAddedTasks
@@ -131,6 +138,13 @@ function AppContainer() {
       </div>
       <div className="px-3 pt-3">
         <div className="flex flex-row items-center space-x-3 text-white">
+        {msg ? (
+            <div className="w-[auto] message show bg-success h-[40px] p-2 text-[15px] text-white text-center">
+              {msg}
+            </div>
+          ) : (
+            <div className="w-[auto] message close h-[40px] p-2 text-[15px] text-white text-center">{msg}</div>
+          )}
           <FiFileText />
           <h1 className="text-[18px]"> Add Tasks</h1>
         </div>
@@ -183,6 +197,7 @@ function AppContainer() {
           )}
         </div>
       </div> */}
+      <CompletedTasks completed={completed} />
     </div>
   );
 }

@@ -35,6 +35,10 @@ function ShowAddedTasks({ tasks, CompletedTask, showSearch, search, DeleteTask, 
                       {Completed ?'': 
                       <button  onClick={() => CompletedTask(index)}><FiCheckCircle /></button>
                      }
+                      {Completed ? <div>
+                        <button onClick={() => DeleteTask(id)}><FiTrash2 /></button>
+                        <button onClick={() => RestoreTasks(index)}><FiRefreshCw /></button>
+                      </div>: ''}
                       <ul style={{textDecoration: Completed ? 'line-through' : ''}}>
                         <li className="text-[18px] font-[600] text-blue">
                           {title}
@@ -43,10 +47,7 @@ function ShowAddedTasks({ tasks, CompletedTask, showSearch, search, DeleteTask, 
                       <div className="mt-5 ml-5">
                         <p className="text-[8px]"><FiCalendar />{DateAdded}</p>
                         </div>
-                      {Completed ? <div>
-                        <button onClick={() => DeleteTask(id)}><FiTrash2 /></button>
-                        <button onClick={() => RestoreTasks(index)}><FiRefreshCw /></button>
-                      </div>: ''}
+                     
                     </div>
                   );
                 })

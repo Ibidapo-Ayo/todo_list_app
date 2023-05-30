@@ -1,8 +1,9 @@
 import React from 'react'
 import { FiSettings, FiHome, FiCheckCircle, FiTrash2 } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import Search from './Search';
 
-function SideBar({AddTask}) {
+function SideBar({AddTask,setSearchHandler, search, SearchTasks, showSearch}) {
   return (
     <div className="h-[100vh] w-[250px] border-gray border-r-[1px] px-5 py-5 flex flex-col space-y-5">
     <div className="flex flex-row items-center justify-between">
@@ -13,11 +14,14 @@ function SideBar({AddTask}) {
       <FiSettings />
     </div>
     </div>
+    <Search
+            setSearchHandler={setSearchHandler}
+            search={search}
+            SearchTasks={SearchTasks}
+            showSearch={showSearch}
+          />
     <div className="">
-      <input type="text" placeholder="Search Todo" className="w-[100%] text-[12px] bg-gray rounded-[30px] px-[13px] py-[10px] focus:outline-none text-[#000]"/>
-    </div>
-    <div className="">
-     <button onClick={AddTask} className="w-[100%] text-[20px] bg-brandColor rounded-[30px] px-[13px] text-white py-[6px] focus:outline-none">+</button>
+     <button onClick={AddTask} className="w-[100%] text-[20px] bg-brandColor rounded-[30px] px-[13px] text-white py-[6px] focus:outline-none cursor-not-allowed">+</button>
     </div>
 
     <div>
@@ -25,10 +29,6 @@ function SideBar({AddTask}) {
         <div className="flex flex-row space-x-3 cursor-pointer text-[13px] px-3 py-2 hover:bg-gray rounded-[20px] items-center text-white">
         <FiHome />
         <li>Home</li>
-        </div>
-        <div className="flex flex-row space-x-3 cursor-pointer text-[13px] px-3 py-2 hover:bg-gray rounded-[20px] items-center text-white">
-        <FiCheckCircle />
-        <li><Link to='/completedtasks'>Completed Todo</Link> </li>
         </div>
         <div className="flex flex-row space-x-3 cursor-not-allowed text-[13px] px-3 py-2 bg-danger-200 rounded-[20px] items-center text-white">
         <FiTrash2 />

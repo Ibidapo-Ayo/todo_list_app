@@ -29,17 +29,11 @@ function ShowAddedTasks({ tasks, CompletedTask, showSearch, search, DeleteTask, 
                   const { id, title, Completed, DateAdded } = task;
                   return (
                     <div
-                      className={Completed ? 'bg-danger-200 flex flex-row items-center space-x-6 w-[300px] shadow-2xl p-3 rounded-[10px]': 'flex flex-row items-center space-x-6 w-[300px] shadow-2xl py-5 px-2 rounded-[10px]'}
+                      className='flex flex-row items-center space-x-6 w-[300px] shadow-2xl py-5 px-2 rounded-[10px]'
                       key={id}
                     >
-                      {Completed ?'': 
-                      <button  onClick={() => CompletedTask(index)}><FiCheckCircle /></button>
-                     }
-                      {Completed ? <div>
-                        <button onClick={() => DeleteTask(id)}><FiTrash2 /></button>
-                        <button onClick={() => RestoreTasks(index)}><FiRefreshCw /></button>
-                      </div>: ''}
-                      <ul style={{textDecoration: Completed ? 'line-through' : ''}}>
+                      <button  onClick={() => CompletedTask(index, id)}><FiCheckCircle /></button>
+                      <ul>
                         <li className="text-[18px] font-[600] text-blue">
                           {title}
                         </li>

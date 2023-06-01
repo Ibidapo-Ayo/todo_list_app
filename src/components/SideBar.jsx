@@ -1,14 +1,19 @@
-import React from 'react'
+import React, { useState, useContext } from 'react'
 import { FiSettings, FiHome, FiCheckCircle, FiTrash2 } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import Search from './Search';
+import { tasksContext } from './taskContext';
 
 function SideBar({AddTask,setSearchHandler, search, SearchTasks, showSearch}) {
+  const {loadUser} = useContext(tasksContext)
+  const [users, setUsers] = loadUser;
+  const {completedTasks} = useContext(tasksContext)
+  const [completedTask, setCompletedTask] = completedTasks;  
   return (
     <div className="h-[100vh] w-[250px] border-gray border-r-[1px] px-5 py-5 flex flex-col space-y-5">
     <div className="flex flex-row items-center justify-between">
     <div>
-      <span className="text-[13px] text-gray">Ibidapo Ayomide</span>
+      <span className="text-[40px] text-white">{users}</span>
     </div>
     <div>
       <FiSettings />
@@ -29,6 +34,13 @@ function SideBar({AddTask,setSearchHandler, search, SearchTasks, showSearch}) {
         <div className="flex flex-row space-x-3 cursor-pointer text-[13px] px-3 py-2 hover:bg-gray rounded-[20px] items-center text-white">
         <FiHome />
         <li>Home</li>
+        </div> <div className="flex flex-row space-x-3 cursor-pointer text-[13px] px-3 py-2 hover:bg-gray rounded-[20px] items-center text-white">
+        <FiCheckCircle />
+        <li>Completed Tasks</li>
+        <span className="text-white -mt-5 px-2 text-center bg-danger-100 rounded">
+        {
+          completedTask.length
+        }</span>
         </div>
         <div className="flex flex-row space-x-3 cursor-not-allowed text-[13px] px-3 py-2 bg-danger-200 rounded-[20px] items-center text-white">
         <FiTrash2 />

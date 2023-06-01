@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import TodoList from "./TodoList";
 import AddTasks from "./AddTasks";
 import ShowAddedTasks from "./ShowAddedTasks";
@@ -9,6 +9,7 @@ import CompletedTasks from "./CompletedTasks";
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
 import { FiFileText } from "react-icons/fi";
+import { tasksContext } from "./taskContext";
 
 function AppContainer() {
   const [Click, setClick] = useState(false);
@@ -16,8 +17,9 @@ function AppContainer() {
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState([]);
   const [msg, setMsg] = useState("");
-
-  const [completed, setCompleted] = useState(JSON.parse(localStorage.getItem('CompletedTasks')))
+  const [user, setUser] = useState('')
+  const {completedTasks} = useContext(tasksContext)
+  const [completedTask, setCompletedTask] = completedTasks;
 
   const AddTask = () => {
     setClick(true);
@@ -63,10 +65,10 @@ function AppContainer() {
     newTasks[index].Completed = true;
     errorMessage = `Task ${index} completed succesfully`;
     setMsg(errorMessage);
-    setTasks(newTasks);
     const completed = tasks.filter(completed => completed.Completed === true)
-     localStorage.setItem('CompletedTasks', JSON.stringify(completed))
-     setCompleted(completed)
+    const notCompletedTasks = tasks.filter(notcompleted => notcompleted.Completed !== true)
+    setTasks(notCompletedTasks)
+    setCompletedTask(prev => [...prev, completed])
     setTimeout(() => {
       errorMessage = ``;
       setMsg();
@@ -88,15 +90,13 @@ function AppContainer() {
   // Restore Tasks
   const RestoreTasks = index => {
     let restoreMsg;
-    const oldTasks = [...tasks];
+    const oldTasks = [...completedTask];
     oldTasks[index].Completed = false;
     restoreMsg = `Task ${index} has succesfully been restored`;
-    const restore = tasks.filter(restore => restore.Completed === true)
+    const restore = completedTask[index].filter(restore => restore.Completed === true)
     localStorage.setItem('CompletedTasks', JSON.stringify(restore))
-    setCompleted(restore)
-    
     setMsg(restoreMsg);
-    setTasks(oldTasks);
+    setTasks(prev => [...prev, restore]);
     setTimeout(() => {
       setMsg();
     }, 2000);
@@ -118,6 +118,15 @@ function AppContainer() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
+  useEffect(()=>{
+    localStorage.setItem('CompletedTasks', JSON.stringify(completedTask))
+  }, [completedTask])
+
+  // Show Registered Users
+  const loadUser = (users) =>{
+    setUser(users)
+  }
+
   return (
     <div className="bg-homeBg h-[100vh] flex flex-row">
       <SideBar 
@@ -132,8 +141,6 @@ function AppContainer() {
         <ShowAddedTasks
           tasks={tasks}
           CompletedTask={TaskCompleted}
-          DeleteTask={DeleteTask}
-          RestoreTasks={RestoreTasks}
         />
       </div>
       <div className="px-3 pt-3">
@@ -153,6 +160,12 @@ function AppContainer() {
             CancelBtn={() => setClick(false)}
             handleAddTasks={handleAddTasks}
           />
+        </div>
+
+        <div className="pt-3 text-white">
+          <h1>CompletedTasks</h1>
+          <CompletedTasks  DeleteTask={DeleteTask}
+          RestoreTasks={RestoreTasks} />
         </div>
       </div>
       {/* <NavBar
@@ -197,7 +210,6 @@ function AppContainer() {
           )}
         </div>
       </div> */}
-      <CompletedTasks completed={completed} />
     </div>
   );
 }

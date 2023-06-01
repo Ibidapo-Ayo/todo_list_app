@@ -1,10 +1,16 @@
-import {createContext} from 'react';
+import {createContext, useState} from 'react';
 
-const tasksContext = createContext()
+export const tasksContext = createContext()
 
-export const taskProvider = ({children}) =>{
+export const TaskProvider = ({children}) => {
+    const [users, setUsers] = useState([])
+    const [completedTask, setCompletedTask] = useState(JSON.parse(localStorage.getItem('CompletedTasks')))
     return(
-        <tasksContext.Provider value={}>
+        <tasksContext.Provider value={{
+            loadUser: [users,setUsers],
+            completedTasks: [completedTask, setCompletedTask]
+            
+            }}>
             {children}
         </tasksContext.Provider>
     )

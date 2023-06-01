@@ -1,10 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link,useNavigate } from 'react-router-dom  '
+import { tasksContext } from "../taskContext";
 
 function Signup() {
   const [uname, setUname] = useState('')
   const [email, setEmail] = useState('')
   const [pwd, setPwd] = useState('')
+  const {loadUser} = useContext(tasksContext)
+  const [users, setUsers] = loadUser;
+
   const navigate = useNavigate()
 
   const onChangeUname = (e)=>{
@@ -29,8 +33,8 @@ function Signup() {
     }).then(res => res.json())
     .then(user => {
       if(user){
+        setUsers(user[0].name)
         navigate('/home')
-
       } 
     }).catch(err => console.log(err))
   }
@@ -81,7 +85,7 @@ function Signup() {
               value="Register"
           />: <input
           type=""
-          className='bg-brandColor opacity-[0.5] rounded-[10px] p-3 cursor-not-allowed text-white px-[16px] w-[314px] h-[44.6px]'
+          className='bg-brandColor text-center opacity-[0.5] rounded-[10px] p-3 cursor-not-allowed text-white px-[16px] w-[314px] h-[44.6px]'
           value="Register" 
       /> }
           </div>

@@ -41,7 +41,6 @@ function ShowAddedTasks({ tasks, CompletedTask, showSearch, search, DeleteTask, 
                       <div className="mt-5 ml-5">
                         <p className="text-[8px]"><FiCalendar />{DateAdded}</p>
                         </div>
-                     
                     </div>
                   );
                 })

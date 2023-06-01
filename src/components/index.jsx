@@ -78,9 +78,9 @@ function AppContainer() {
   // Deleted Tasks
   const DeleteTask = id => {
     let deleteMsg;
-    const DeletedTasks = tasks.filter(deletetasks => id !== deletetasks.id);
+    const DeletedTasks = completedTask.filter(deletetasks => id !== deletetasks[0].id);
     deleteMsg = `Task ${id} has succefully been deleted`;
-    setTasks(DeletedTasks);
+    setCompletedTask(DeletedTasks)
     setMsg(deleteMsg);
     setTimeout(() => {
       setMsg();
@@ -88,19 +88,19 @@ function AppContainer() {
   };
 
   // Restore Tasks
-  const RestoreTasks = index => {
-    let restoreMsg;
-    const oldTasks = [...completedTask];
-    oldTasks[index].Completed = false;
-    restoreMsg = `Task ${index} has succesfully been restored`;
-    const restore = completedTask[index].filter(restore => restore.Completed === true)
-    localStorage.setItem('CompletedTasks', JSON.stringify(restore))
-    setMsg(restoreMsg);
-    setTasks(prev => [...prev, restore]);
-    setTimeout(() => {
-      setMsg();
-    }, 2000);
-  };
+  // const RestoreTasks = index => {
+  //   let restoreMsg;
+  //   const oldTasks = [...completedTask];
+  //   oldTasks[index].Completed = false;
+  //   restoreMsg = `Task ${index} has succesfully been restored`;
+  //   const restore = completedTask[index].filter(restore => restore.Completed === true)
+  //   localStorage.setItem('CompletedTasks', JSON.stringify(restore))
+  //   setMsg(restoreMsg);
+  //   setTasks(restore);
+  //   setTimeout(() => {
+  //     setMsg();
+  //   }, 2000);
+  // };
 
   //Search Tasks
   const setSearchHandler = e => {
@@ -108,8 +108,7 @@ function AppContainer() {
   };
 
   const SearchTasks = () => {
-    var updatedList = tasks.filter(searchR =>
-      searchR.title.toLowerCase().includes(search.toLowerCase())
+    var updatedList = tasks.filter(searchR => searchR.title.toLowerCase().includes(search.toLowerCase())
     );
     setShowSearch(updatedList);
   };
@@ -164,8 +163,7 @@ function AppContainer() {
 
         <div className="pt-3 text-white">
           <h1>CompletedTasks</h1>
-          <CompletedTasks  DeleteTask={DeleteTask}
-          RestoreTasks={RestoreTasks} />
+          <CompletedTasks  DeleteTask={DeleteTask} />
         </div>
       </div>
       {/* <NavBar

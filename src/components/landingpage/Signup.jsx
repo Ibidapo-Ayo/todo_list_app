@@ -36,7 +36,13 @@ function Signup() {
         setUsers(user[0].name)
         navigate('/home')
       } 
-    }).catch(err => console.log(err))
+    }).catch(err =>  {
+      if (err) {
+        navigate('/')
+        console.log("Unable to Connect")
+      }
+      
+    })
   }
   
   return (

@@ -5,7 +5,7 @@ function CompletedTasks({DeleteTask}) {
   const {completedTasks} = useContext(tasksContext)
   const [completedTask, setCompletedTask] = completedTasks;  
   return (
-    <div className="grid grid-cols-2 gap-2 mt-5">
+    <div className="grid md:grid-cols-2 grid-cols-1 gap-2 mt-5">
    {completedTask.length ? (
      completedTask.map((complete, index) =>{
       //  const {id, title, DateAdded, Completed} = complete;

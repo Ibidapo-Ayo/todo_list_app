@@ -12,10 +12,10 @@ function App() {
       <TaskProvider>
       <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Signup />} />
-            <Route path="/signin" element={<SignIn />} />
+            {/* <Route path="/" element={<Signup />} /> */}
+            {/* <Route path="/signin" element={<SignIn />} /> */}
             <Route path="/completedtasks" element={<CompletedTasks />} />
-            <Route path="/home" element={<AppContainer />} />
+            <Route path="/" element={<AppContainer />} />
           </Routes>
         </BrowserRouter>
       </TaskProvider>

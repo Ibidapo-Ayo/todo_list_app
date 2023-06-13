@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 function TodoList({ CancelBtn, handleAddTasks }) {
   return (
-    <section className="bg-transparent rounded-[15px]  px-2 py-3 w-[700px]">
+    <section className="bg-transparent rounded-[15px]  px-2 py-3 md:w-[700px] w-100">
       <div className="space-y-6">
         <form action="#" onSubmit={handleAddTasks}>
           <div className="flex flex-col space-y-4 text-white">

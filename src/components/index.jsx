@@ -86,22 +86,6 @@ function AppContainer() {
       setMsg();
     }, 3000);
   };
-
-  // Restore Tasks
-  // const RestoreTasks = index => {
-  //   let restoreMsg;
-  //   const oldTasks = [...completedTask];
-  //   oldTasks[index].Completed = false;
-  //   restoreMsg = `Task ${index} has succesfully been restored`;
-  //   const restore = completedTask[index].filter(restore => restore.Completed === true)
-  //   localStorage.setItem('CompletedTasks', JSON.stringify(restore))
-  //   setMsg(restoreMsg);
-  //   setTasks(restore);
-  //   setTimeout(() => {
-  //     setMsg();
-  //   }, 2000);
-  // };
-
   //Search Tasks
   const setSearchHandler = e => {
     setSearch(e.target.value);
@@ -127,7 +111,7 @@ function AppContainer() {
   }
 
   return (
-    <div className="bg-homeBg h-[100vh] flex flex-row">
+    <div className="bg-homeBg md:h-[100vh] flex md:flex-row flex-col w-100 h-[100%] pb-10">
       <SideBar 
       AddTask={AddTask}
         setSearchHandler={setSearchHandler}
@@ -136,7 +120,7 @@ function AppContainer() {
         SearchTasks={SearchTasks}
       />
 
-      <div className="w-[350px] border-gray border-r-2 text-white">
+      <div className="w-[350px] border-gray md:border-r-2 text-white">
         <ShowAddedTasks
           tasks={tasks}
           CompletedTask={TaskCompleted}

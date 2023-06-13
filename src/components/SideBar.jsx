@@ -10,7 +10,7 @@ function SideBar({AddTask,setSearchHandler, search, SearchTasks, showSearch}) {
   const {completedTasks} = useContext(tasksContext)
   const [completedTask, setCompletedTask] = completedTasks;  
   return (
-    <div className="h-[100vh] w-[250px] border-gray border-r-[1px] px-5 py-5 flex flex-col space-y-5">
+    <div className="md:h-[100vh] md:w-[250px] border-gray md:border-r-[1px] px-5 py-5 flex flex-col space-y-5 w-100">
     <div className="flex flex-row items-center justify-between">
     <div>
       <span className="text-[40px] text-white">{users}</span>

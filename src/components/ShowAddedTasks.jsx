@@ -24,7 +24,7 @@ function ShowAddedTasks({ tasks, CompletedTask, showSearch, search, DeleteTask, 
         </div>
         
             <div className="flex flex-col space-y-5">
-              {tasks.length > 0 ? (
+              {
                 tasks.map((task, index) => {
                   const { id, title, Completed, DateAdded } = task;
                   return (
@@ -44,11 +44,7 @@ function ShowAddedTasks({ tasks, CompletedTask, showSearch, search, DeleteTask, 
                     </div>
                   );
                 })
-              ) : (
-                <h2>
-                  No task to show, click on the add button below to add new task
-                </h2>
-              )}
+              }
             </div>
           </div>
         </div>

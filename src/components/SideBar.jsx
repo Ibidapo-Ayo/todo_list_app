@@ -38,9 +38,8 @@ function SideBar({AddTask,setSearchHandler, search, SearchTasks, showSearch}) {
         <FiCheckCircle />
         <li>Completed Tasks</li>
         <span className="text-white -mt-5 px-2 text-center bg-danger-100 rounded">
-        {
-          completedTask.length
-        }</span>
+
+        </span>
         </div>
         <div className="flex flex-row space-x-3 cursor-not-allowed text-[13px] px-3 py-2 bg-danger-200 rounded-[20px] items-center text-white">
         <FiTrash2 />

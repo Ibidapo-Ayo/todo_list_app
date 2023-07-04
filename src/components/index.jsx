@@ -17,8 +17,8 @@ function AppContainer() {
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState([]);
   const [msg, setMsg] = useState("");
-  const [user, setUser] = useState('')
-  const {completedTasks} = useContext(tasksContext)
+  const [user, setUser] = useState("");
+  const { completedTasks } = useContext(tasksContext);
   const [completedTask, setCompletedTask] = completedTasks;
 
   const AddTask = () => {
@@ -65,10 +65,12 @@ function AppContainer() {
     newTasks[index].Completed = true;
     errorMessage = `Task ${index} completed succesfully`;
     setMsg(errorMessage);
-    const completed = tasks.filter(completed => completed.Completed === true)
-    const notCompletedTasks = tasks.filter(notcompleted => notcompleted.Completed !== true)
-    setTasks(notCompletedTasks)
-    setCompletedTask(prev => [...prev, completed])
+    const completed = tasks.filter(completed => completed.Completed === true);
+    const notCompletedTasks = tasks.filter(
+      notcompleted => notcompleted.Completed !== true
+    );
+    setTasks(notCompletedTasks);
+    setCompletedTask(prev => [...prev, completed]);
     setTimeout(() => {
       errorMessage = ``;
       setMsg();
@@ -78,9 +80,11 @@ function AppContainer() {
   // Deleted Tasks
   const DeleteTask = id => {
     let deleteMsg;
-    const DeletedTasks = completedTask.filter(deletetasks => id !== deletetasks[0].id);
+    const DeletedTasks = completedTask.filter(
+      deletetasks => id !== deletetasks[0].id
+    );
     deleteMsg = `Task ${id} has succefully been deleted`;
-    setCompletedTask(DeletedTasks)
+    setCompletedTask(DeletedTasks);
     setMsg(deleteMsg);
     setTimeout(() => {
       setMsg();
@@ -92,28 +96,29 @@ function AppContainer() {
   };
 
   const SearchTasks = () => {
-    var updatedList = tasks.filter(searchR => searchR.title.toLowerCase().includes(search.toLowerCase())
+    var updatedList = tasks.filter(searchR =>
+      searchR.title.toLowerCase().includes(search.toLowerCase())
     );
     setShowSearch(updatedList);
   };
+  useEffect(() => {
+    setTasks(JSON.parse(localStorage.getItem("tasks")));
+    setCompletedTask(JSON.parse(localStorage.getItem("CompletedTasks")));
+  }, []);
+
   // Save Tasks to Local Storage
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
-  useEffect(()=>{
-    localStorage.setItem('CompletedTasks', JSON.stringify(completedTask))
-  }, [completedTask])
-
-  // Show Registered Users
-  const loadUser = (users) =>{
-    setUser(users)
-  }
+  useEffect(() => {
+    localStorage.setItem("CompletedTasks", JSON.stringify(completedTask));
+  }, [completedTask]);
 
   return (
     <div className="bg-homeBg md:h-[100vh] flex md:flex-row flex-col w-100 h-[100%] pb-10">
-      <SideBar 
-      AddTask={AddTask}
+      <SideBar
+        AddTask={AddTask}
         setSearchHandler={setSearchHandler}
         showSearch={showSearch}
         search={search}
@@ -121,19 +126,18 @@ function AppContainer() {
       />
 
       <div className="w-[350px] border-gray md:border-r-2 text-white">
-        <ShowAddedTasks
-          tasks={tasks}
-          CompletedTask={TaskCompleted}
-        />
+        <ShowAddedTasks tasks={tasks} CompletedTask={TaskCompleted} />
       </div>
       <div className="px-3 pt-3">
         <div className="flex flex-row items-center space-x-3 text-white">
-        {msg ? (
+          {msg ? (
             <div className="w-[auto] message show bg-success h-[40px] p-2 text-[15px] text-white text-center">
               {msg}
             </div>
           ) : (
-            <div className="w-[auto] message close h-[40px] p-2 text-[15px] text-white text-center">{msg}</div>
+            <div className="w-[auto] message close h-[40px] p-2 text-[15px] text-white text-center">
+              {msg}
+            </div>
           )}
           <FiFileText />
           <h1 className="text-[18px]"> Add Tasks</h1>
@@ -147,7 +151,7 @@ function AppContainer() {
 
         <div className="pt-3 text-white">
           <h1>CompletedTasks</h1>
-          <CompletedTasks  DeleteTask={DeleteTask} />
+          <CompletedTasks DeleteTask={DeleteTask} />
         </div>
       </div>
       {/* <NavBar
